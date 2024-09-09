@@ -41,20 +41,24 @@ namespace FacultySystem.Services
 			List<StudentInfoModel> studentsInfo = new();
 			foreach (var request in requests)
 			{
-				var dep = request.DepartmentsOrder.Dequeue();
-				if (departmentsLimit[dep] > 0)
+				while (request.DepartmentsOrder.Count > 0)
 				{
-					studentsInfo.Add(new StudentInfoModel
+					var dep = request.DepartmentsOrder.Dequeue();
+					if (departmentsLimit[dep] > 0)
 					{
-						Department = dep,
-						StudentId = request.StudentId,
-						StudentGPA = request.StudentGPA,
-						StudentFullName = "Default Sardina"
-					});
-					departmentsLimit[dep]--;
+						studentsInfo.Add(new StudentInfoModel
+						{
+							Department = dep,
+							StudentId = request.StudentId,
+							StudentGPA = request.StudentGPA,
+							StudentFullName = "Default Sardina"
+						});
+						departmentsLimit[dep]--;
+						break;
+					}
 				}
 			}
-		
+
 			return studentsInfo;
 		}
 
